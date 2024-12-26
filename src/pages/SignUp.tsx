@@ -11,6 +11,7 @@ const SignUp: React.FC = () => {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [error, setError] = useState("");
   const [redirect, setRedirect] = useState(false);
+
   useEffect(() => {
     if (isOtpSent) {
       const timer = setTimeout(() => {
@@ -22,14 +23,14 @@ const SignUp: React.FC = () => {
   const handleSignUp = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/signup",
+        "https://notes-app-api-4elh.onrender.com/api/auth/signup",
         { name, email, dob, password }
       );
       if (response.status == 200) {
         setIsOtpSent(true);
+      } else {
+        setError("Invalid Credentials!");
       }
-
-      setError("");
     } catch (err: any) {
       setError(err.response?.data?.error || "Failed to send OTP");
     }
@@ -39,11 +40,11 @@ const SignUp: React.FC = () => {
   }
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="grid grid-cols-1  lg:grid-cols-2 w-10/12 bg-white shadow-lg rounded-lg">
-        <div className="p-6 ">
+      <div className="grid lg:grid-cols-2 px-6  w-full lg:w-10/12 bg-white lg:shadow-lg rounded-lg">
+        <div className="lg:p-24 ">
           {" "}
-          <div className="relative max-w-lg mx-auto p-24 bg-white">
-            <div className="absolute inline-flex p-12 items-center top-0 left-0">
+          <div className="relative max-w-lg lg:mx-auto mx-28 lg:p-24 bg-white">
+            <div className="absolute inline-flex  items-center top-0 left-0">
               <svg
                 width="32"
                 height="32"
@@ -78,95 +79,101 @@ const SignUp: React.FC = () => {
               </svg>
               <p className="font-bold">HD</p>
             </div>
-            {isOtpSent && (
-              <p className="text-green-500">OTP sent successfuly!</p>
-            )}
-            <h1 className="text-2xl font-bold text-gray-900">Sign up</h1>
-            <p className="text-sm text-gray-600 mb-6">
-              Sign up to enjoy the feature of HD
-            </p>
-
-            <InputField
-              label="Your Name"
-              type="text"
-              value={name}
-              palceholder="Enter your name"
-              onChange={(e) => setName(e.target.value)}
-            />
-            <InputField
-              label="Date of Birth"
-              type="date"
-              value={dob}
-              palceholder="Enter your DOB"
-              onChange={(e) => setDob(e.target.value)}
-            />
-            <InputField
-              label="Email"
-              type="email"
-              value={email}
-              palceholder="Enter your email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <InputField
-              label="OTP"
-              type="password"
-              value={password}
-              palceholder="Enter OTP"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button text="Sign up" onClick={handleSignUp} />
-            <div className="flex items-center justify-center mt-6">
-              <span className="text-sm text-gray-500">or</span>
-            </div>
-            <button
-              type="button"
-              className="w-full mt-4 text-black bg-gray-50 hover:bg-gray-200 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center mb-2"
-            >
-              Sign in with Google
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M20.16 12.1932C20.16 11.5905 20.1059 11.011 20.0055 10.4546H12V13.7425H16.5746C16.3775 14.8051 15.7786 15.7053 14.8784 16.308V18.4407H17.6255C19.2327 16.961 20.16 14.7819 20.16 12.1932Z"
-                  fill="#4285F4"
-                />
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M12 20.5C14.295 20.5 16.2191 19.7389 17.6254 18.4407L14.8784 16.3079C14.1173 16.8179 13.1436 17.1193 12 17.1193C9.78611 17.1193 7.91224 15.6241 7.24383 13.615H4.40405V15.8173C5.80269 18.5952 8.67724 20.5 12 20.5Z"
-                  fill="#34A853"
-                />
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M7.24387 13.6151C7.07387 13.1051 6.97728 12.5603 6.97728 12.0001C6.97728 11.4399 7.07387 10.8951 7.24387 10.3851V8.1828H4.40409C3.82841 9.3303 3.5 10.6285 3.5 12.0001C3.5 13.3717 3.82841 14.6699 4.40409 15.8174L7.24387 13.6151Z"
-                  fill="#FBBC05"
-                />
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M12 6.88075C13.2479 6.88075 14.3684 7.30961 15.2493 8.15189L17.6873 5.71393C16.2152 4.34234 14.2911 3.50006 12 3.50006C8.67724 3.50006 5.80269 5.40484 4.40405 8.1828L7.24383 10.3851C7.91224 8.37598 9.78611 6.88075 12 6.88075Z"
-                  fill="#EA4335"
-                />
-              </svg>
-            </button>
-            <p className="text-sm text-gray-500 gap-1 text-center mt-4">
-              Already have an account??{""}
-              <a
-                aria-label="sign in form"
-                href="/signin"
-                className="text-blue-600 underline"
-              >
-                Sign in
-              </a>
-            </p>
           </div>
+          <h1 className="text-2xl text-center lg:mt-0 mt-12 font-bold text-gray-900">
+            Sign up
+          </h1>
+          <p className="text-sm text-center text-gray-600 mb-6">
+            Sign up to enjoy the feature of HD
+          </p>
+          {isOtpSent && <p className="text-green-500">OTP sent successfuly!</p>}
+          {error && (
+            <div className="text-red-600 text-sm mt-2">
+              <p>{error}</p>
+            </div>
+          )}
+          <InputField
+            label="Your Name"
+            type="text"
+            value={name}
+            palceholder="Enter your name"
+            onChange={(e) => setName(e.target.value)}
+          />
+          <InputField
+            label="Date of Birth"
+            type="date"
+            value={dob}
+            palceholder="Enter your DOB"
+            onChange={(e) => setDob(e.target.value)}
+          />
+          <InputField
+            label="Email"
+            type="email"
+            value={email}
+            palceholder="Enter your email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <InputField
+            label="OTP"
+            type="password"
+            value={password}
+            palceholder="Enter OTP"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button text="Sign up" onClick={handleSignUp} />
+          <div className="flex items-center justify-center gap-2 mt-6">
+            <div className="border px-16 border-x-2 border-gray-300"></div>
+            <span className="text-sm text-gray-500">or</span>
+            <div className="border px-16 border-x-2 border-gray-300"></div>
+          </div>
+          <button
+            type="button"
+            className="w-full border border-gray-300 mt-4 text-black bg-gray-50 hover:bg-gray-200 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center mb-2"
+          >
+            Sign in with Google
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M20.16 12.1932C20.16 11.5905 20.1059 11.011 20.0055 10.4546H12V13.7425H16.5746C16.3775 14.8051 15.7786 15.7053 14.8784 16.308V18.4407H17.6255C19.2327 16.961 20.16 14.7819 20.16 12.1932Z"
+                fill="#4285F4"
+              />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M12 20.5C14.295 20.5 16.2191 19.7389 17.6254 18.4407L14.8784 16.3079C14.1173 16.8179 13.1436 17.1193 12 17.1193C9.78611 17.1193 7.91224 15.6241 7.24383 13.615H4.40405V15.8173C5.80269 18.5952 8.67724 20.5 12 20.5Z"
+                fill="#34A853"
+              />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M7.24387 13.6151C7.07387 13.1051 6.97728 12.5603 6.97728 12.0001C6.97728 11.4399 7.07387 10.8951 7.24387 10.3851V8.1828H4.40409C3.82841 9.3303 3.5 10.6285 3.5 12.0001C3.5 13.3717 3.82841 14.6699 4.40409 15.8174L7.24387 13.6151Z"
+                fill="#FBBC05"
+              />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M12 6.88075C13.2479 6.88075 14.3684 7.30961 15.2493 8.15189L17.6873 5.71393C16.2152 4.34234 14.2911 3.50006 12 3.50006C8.67724 3.50006 5.80269 5.40484 4.40405 8.1828L7.24383 10.3851C7.91224 8.37598 9.78611 6.88075 12 6.88075Z"
+                fill="#EA4335"
+              />
+            </svg>
+          </button>
+          <p className="text-sm text-gray-500 gap-1 text-center mt-4">
+            Already have an account??{""}
+            <a
+              aria-label="sign in form"
+              href="/signin"
+              className="text-blue-600 underline"
+            >
+              Sign in
+            </a>
+          </p>
         </div>
         <div className="hidden lg:block rounded-xl">
           <img
